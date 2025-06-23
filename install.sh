@@ -63,11 +63,6 @@ yay -S --needed \
     catppuccin-gtk-theme-mocha \
     catppuccin-cursors-mocha
 
-# Install VirtualBox Guest Additions for VMs
-echo -e "${GREEN}Installing VirtualBox Guest Additions...${NC}"
-sudo pacman -S --needed virtualbox-guest-utils
-sudo systemctl enable vboxservice
-
 # Create necessary directories
 echo -e "${GREEN}Creating directories...${NC}"
 mkdir -p ~/.config/{hypr,waybar,rofi,gtk-3.0,kitty}
@@ -131,13 +126,6 @@ fi
 # Verify wallpaper directory
 if [ -z "$(ls -A ~/Pictures/wallpapers)" ]; then
     echo -e "${YELLOW}Warning: No wallpapers found in ~/Pictures/wallpapers. Please add some images.${NC}"
-fi
-
-# Test swww initialization
-echo -e "${GREEN}Testing swww initialization...${NC}"
-if ! swww init; then
-    echo -e "${RED}Error: swww init failed. Check swww installation and Wayland environment.${NC}"
-    exit 1
 fi
 
 # Test kitty
