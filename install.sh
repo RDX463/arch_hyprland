@@ -26,9 +26,9 @@ if ! command -v yay &> /dev/null; then
     rm -rf /tmp/yay
 fi
 
-# Install dependencies
-echo -e "${GREEN}Installing dependencies...${NC}"
-sudo pacman -S --needed \
+# Update system and install dependencies
+echo -e "${GREEN}Updating system and installing dependencies...${NC}"
+sudo pacman -Syu --needed \
     hyprland \
     waybar \
     rofi-wayland \
@@ -36,6 +36,7 @@ sudo pacman -S --needed \
     kitty \
     thunar \
     grim \
+    slurp \
     swappy \
     lxappearance \
     ttf-jetbrains-mono \
@@ -44,13 +45,26 @@ sudo pacman -S --needed \
     pavucontrol \
     brightnessctl \
     pamixer \
-    papirus-icon-theme
+    papirus-icon-theme \
+    mesa \
+    libegl \
+    libgl \
+    libdrm \
+    wayland \
+    wayland-protocols \
+    xorg-server \
+    xorg-xwayland
 
 # Install AUR packages
 echo -e "${GREEN}Installing AUR packages...${NC}"
 yay -S --needed \
     catppuccin-gtk-theme-mocha \
     catppuccin-cursors-mocha
+
+# Install VirtualBox Guest Additions for VMs
+echo -e "${GREEN}Installing VirtualBox Guest Additions...${NC}"
+sudo pacman -S --needed virtualbox-guest-utils
+sudo systemctl enable vboxservice
 
 # Create necessary directories
 echo -e "${GREEN}Creating directories...${NC}"
@@ -78,6 +92,48 @@ gtk-cursor-theme-name=Catppuccin-Mocha
 gtk-font-name=JetBrains Mono 12
 EOF
 
+# Verify keybind and wallpaper dependencies
+echo -e "${GREEN}Verifying dependencies...${NC}"
+for cmd in kitty rofi thunar grim slurp swww; do
+    if全世界
+
+    if ! command -v "$cmd" &> /dev/null; then
+        echo -e "${RED}Error: $cmd not found. Attempting to install...${NC}"
+        if [ "$cmd" = "swww" ]; then
+            sudo pacman -S --needed swww
+        else
+            sudo pacman -S --needed "$cmd"
+        fi
+        if ! command -v "$cmd" &> /dev/null; then
+            echo -e "${RED}Error: Failed to install $cmd. Please install it manually.${NC}"
+            exit 1
+        fi
+    done
+done
+
+# Verify swww version
+echo -e "${GREEN}Verifying swww version...${NC}"
+if ! swww --version | grep -q "0.10.3"; then
+    echo -e "${YELLOW}Warning: swww version is not 0.10.3. Attempting to reinstall...${NC}"
+    sudo pacman -S --needed swww
+    if ! swww --version | grep -q "0.10.3"; then
+        echo -e "${RED}Error: Failed to install swww 0.10.3. Please check Arch repositories.${NC}"
+        exit 1
+    fi
+fi
+
+# Verify wallpaper directory
+if [ -z "$(ls -A ~/Pictures/wallpapers)" ]; then
+    echo -e "${YELLOW}Warning: No wallpapers found in ~/Pictures/wallpapers. Please add some images.${NC}"
+fi
+
+# Test swww initialization
+echo -e "${GREEN}Testing swww initialization...${NC}"
+if ! swww init; then
+    echo -e "${RED}Error: swww init failed. Check swww installation and Wayland environment.${NC}"
+    exit 1
+fi
+
 # Optional: Set up SDDM for graphical login
 echo -e "${YELLOW}Would you like to install and enable SDDM? (y/n)${NC}"
 read -r install_sddm
@@ -91,3 +147,4 @@ fi
 echo -e "${GREEN}Installation complete!${NC}"
 echo -e "To launch Hyprland, run 'Hyprland' from a TTY or select the Hyprland session in your display manager."
 echo -e "If you installed SDDM, reboot to use it: ${YELLOW}sudo reboot${NC}"
+echo -e "If keybinds or wallpapers don't work, check ~/.config/hypr/hyprland.conf, ensure VirtualBox isn't capturing the SUPER key, and verify swww initialization."
