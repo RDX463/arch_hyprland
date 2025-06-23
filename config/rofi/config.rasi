@@ -1,0 +1,52 @@
+/* ~/.config/rofi/config.rasi */
+configuration {
+    modi: "drun,run,filebrowser";
+    font: "JetBrains Mono 12";
+    show-icons: true;
+    icon-theme: "Papirus";
+    display-drun: "Apps";
+    drun-display-format: "{name}";
+}
+* {
+    background: #1e1e1e;
+    foreground: #ffffff;
+    accent: #33ccff;
+}
+window {
+    width: 600px;
+    border: 2px;
+    border-color: #33ccff;
+    border-radius: 10px;
+    background: #1e1e1e;
+}
+mainbox {
+    padding: 10px;
+}
+inputbar {
+    background: #2e2e2e;
+    padding: 10px;
+    children: [ prompt, entry ];
+}
+prompt {
+    padding: 0 10px;
+    text-align: center;
+}
+entry {
+    background: #2e2e2e;
+    text-align: center;
+}
+listview {
+    lines: 5;
+    padding: 10px;
+    background: #1e1e1e;
+}
+element {
+    padding: 5px;
+    background: #1e1e1e;
+    text-align: left;
+}
+element selected {
+    background: #33ccff;
+    color: #000000;
+    border-radius: 5px;
+}

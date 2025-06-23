@@ -1,0 +1,73 @@
+// ~/.config/waybar/config.jsonc
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "spacing": 4,
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray"],
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5"
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50
+    },
+    "clock": {
+        "format": "{:%H:%M %d/%m/%Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
+        "interval": 1
+    },
+    "pulseaudio": {
+        "format": "{volume}% {icon}",
+        "format-muted": "Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "network": {
+        "format-wifi": "{essid} ({signalStrength}%)",
+        "format-ethernet": "Connected",
+        "format-disconnected": "Disconnected",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "interval": 5
+    },
+    "cpu": {
+        "format": "CPU {usage}%",
+        "interval": 5
+    },
+    "memory": {
+        "format": "Mem {used:.1f}G",
+        "interval": 5
+    },
+    "battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""],
+        "interval": 5
+    },
+    "tray": {
+        "spacing": 10
+    }
+}

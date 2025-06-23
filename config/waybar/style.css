@@ -1,0 +1,40 @@
+/* ~/.config/waybar/style.css */
+* {
+    font-family: "JetBrains Mono", sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    border: none;
+    border-radius: 0;
+}
+window#waybar {
+    background: rgba(30, 30, 30, 0.8);
+    border-bottom: 2px solid #33ccff;
+    transition: none;
+}
+#workspaces button {
+    padding: 0 10px;
+    background: transparent;
+    color: #ffffff;
+    border-bottom: 2px solid transparent;
+}
+#workspaces button.focused {
+    background: #33ccff;
+    color: #000000;
+    border-bottom: 2px solid #ffffff;
+}
+#workspaces button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+#window, #clock, #pulseaudio, #network, #cpu, #memory, #battery, #tray {
+    padding: 0 10px;
+    margin: 0 5px;
+}
+#clock {
+    font-weight: bold;
+}
+#battery.warning {
+    color: #ffaa00;
+}
+#battery.critical {
+    color: #ff0000;
+}
