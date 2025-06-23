@@ -55,13 +55,22 @@ sudo pacman -Syu --needed \
     wayland-protocols \
     xorg-server \
     xorg-xwayland \
-    fontconfig
+    fontconfig \
+    network-manager \
+    bluez \
+    bluez-utils \
+    power-profiles-daemon
 
 # Install AUR packages
 echo -e "${GREEN}Installing AUR packages...${NC}"
 yay -S --needed \
     catppuccin-gtk-theme-mocha \
     catppuccin-cursors-mocha
+
+# Enable NetworkManager and Bluetooth services
+echo -e "${GREEN}Enabling NetworkManager and Bluetooth services...${NC}"
+sudo systemctl enable NetworkManager
+sudo systemctl enable bluetooth
 
 # Create necessary directories
 echo -e "${GREEN}Creating directories...${NC}"
@@ -101,7 +110,7 @@ EOF
 
 # Verify keybind and wallpaper dependencies
 echo -e "${GREEN}Verifying dependencies...${NC}"
-for cmd in kitty rofi thunar grim slurp swww; do
+for cmd in kitty rofi thunar grim slurp swww nm-connection-editor blueman-manager brightnessctl powerprofilesctl; do
     if ! command -v "$cmd" &> /dev/null; then
         echo -e "${RED}Error: $cmd not found. Attempting to install...${NC}"
         sudo pacman -S --needed "$cmd"
@@ -111,17 +120,6 @@ for cmd in kitty rofi thunar grim slurp swww; do
         fi
     fi
 done
-
-# Verify swww version
-echo -e "${GREEN}Verifying swww version...${NC}"
-if ! swww --version | grep -q "0.10.3"; then
-    echo -e "${YELLOW}Warning: swww version is not 0.10.3. Attempting to reinstall...${NC}"
-    sudo pacman -S --needed swww
-    if ! swww --version | grep -q "0.10.3"; then
-        echo -e "${RED}Error: Failed to install swww 0.10.3. Please check Arch repositories.${NC}"
-        exit 1
-    fi
-fi
 
 # Verify wallpaper directory
 if [ -z "$(ls -A ~/Pictures/wallpapers)" ]; then
@@ -148,4 +146,4 @@ fi
 echo -e "${GREEN}Installation complete!${NC}"
 echo -e "To launch Hyprland, run 'Hyprland' from a TTY or select the Hyprland session in your display manager."
 echo -e "If you installed SDDM, reboot to use it: ${YELLOW}sudo reboot${NC}"
-echo -e "If keybinds, kitty, or wallpapers fail, check ~/.config/hypr/hyprland.conf, ~/.config/kitty/kitty.conf, and ensure VirtualBox isn't capturing the SUPER key."
+echo -e "If keybinds, kitty, or Waybar modules fail, check ~/.config/hypr/hyprland.conf, ~/.config/kitty/kitty.conf, ~/.config/waybar/config, and ensure VirtualBox isn't capturing the SUPER key."
