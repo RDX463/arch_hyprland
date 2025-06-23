@@ -1,0 +1,10 @@
+@theme "default"
+
+* {
+  background: #1e1e2eE6;
+  foreground: #cdd6f4;
+  border-color: #89b4fa;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+window { padding: 20px; }

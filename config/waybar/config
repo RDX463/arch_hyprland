@@ -1,0 +1,42 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "network",
+    "bluetooth",
+    "wireplumber",
+    "backlight",
+    "power_profiles_daemon",
+    "battery",
+    "custom/power"
+  ],
+
+  "cpu": { "interval": 2, "format": "{usage}% " },
+  "memory": { "interval": 5, "format": "{used}MB " },
+
+  "network": {
+    "interface": "auto",
+    "format": "{bandwidthDownBytes}  {bandwidthUpBytes} "
+  },
+
+  "bluetooth": { "format": "{icon}" },
+
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{percent}% ",
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
+
+  "power_profiles_daemon": { "format": "{profile}" },
+
+  "custom/power": {
+    "format": "⏻",
+    "on-click": "~/.config/hypr/scripts/powermenu.sh",
+    "tooltip": "Power menu"
+  }
+}

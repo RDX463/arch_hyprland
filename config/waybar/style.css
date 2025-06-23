@@ -1,0 +1,13 @@
+* {
+  font-family: Iosevka, "Noto Sans";
+  font-size: 13px;
+}
+window#waybar {
+  background: rgba(30, 30, 46, 0.6);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid #89b4fa;
+}
+/* colour hints per module */
+#cpu { color: #f38ba8; }
+#network { color: #94e2d5; }
+...
