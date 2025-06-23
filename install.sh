@@ -49,11 +49,13 @@ sudo pacman -Syu --needed \
     mesa \
     libegl \
     libgl \
+    libgles \
     libdrm \
     wayland \
     wayland-protocols \
     xorg-server \
-    xorg-xwayland
+    xorg-xwayland \
+    fontconfig
 
 # Install AUR packages
 echo -e "${GREEN}Installing AUR packages...${NC}"
@@ -68,7 +70,7 @@ sudo systemctl enable vboxservice
 
 # Create necessary directories
 echo -e "${GREEN}Creating directories...${NC}"
-mkdir -p ~/.config/{hypr,waybar,rofi,gtk-3.0}
+mkdir -p ~/.config/{hypr,waybar,rofi,gtk-3.0,kitty}
 mkdir -p ~/.config/hypr/scripts
 mkdir -p ~/Pictures/wallpapers
 mkdir -p ~/.cache
@@ -92,23 +94,27 @@ gtk-cursor-theme-name=Catppuccin-Mocha
 gtk-font-name=JetBrains Mono 12
 EOF
 
+# Apply kitty configuration
+echo -e "${GREEN}Applying kitty configuration...${NC}"
+cat > ~/.config/kitty/kitty.conf << EOF
+font_family      JetBrains Mono
+font_size        12
+background       #1e1e2e
+foreground       #cdd6f4
+cursor           #f5e0dc
+EOF
+
 # Verify keybind and wallpaper dependencies
 echo -e "${GREEN}Verifying dependencies...${NC}"
 for cmd in kitty rofi thunar grim slurp swww; do
-    if全世界
-
     if ! command -v "$cmd" &> /dev/null; then
         echo -e "${RED}Error: $cmd not found. Attempting to install...${NC}"
-        if [ "$cmd" = "swww" ]; then
-            sudo pacman -S --needed swww
-        else
-            sudo pacman -S --needed "$cmd"
-        fi
+        sudo pacman -S --needed "$cmd"
         if ! command -v "$cmd" &> /dev/null; then
             echo -e "${RED}Error: Failed to install $cmd. Please install it manually.${NC}"
             exit 1
         fi
-    done
+    fi
 done
 
 # Verify swww version
@@ -134,6 +140,13 @@ if ! swww init; then
     exit 1
 fi
 
+# Test kitty
+echo -e "${GREEN}Testing kitty...${NC}"
+if ! kitty --version; then
+    echo -e "${RED}Error: kitty failed to run. Check logs with 'kitty --debug-rendering'.${NC}"
+    exit 1
+fi
+
 # Optional: Set up SDDM for graphical login
 echo -e "${YELLOW}Would you like to install and enable SDDM? (y/n)${NC}"
 read -r install_sddm
@@ -147,4 +160,4 @@ fi
 echo -e "${GREEN}Installation complete!${NC}"
 echo -e "To launch Hyprland, run 'Hyprland' from a TTY or select the Hyprland session in your display manager."
 echo -e "If you installed SDDM, reboot to use it: ${YELLOW}sudo reboot${NC}"
-echo -e "If keybinds or wallpapers don't work, check ~/.config/hypr/hyprland.conf, ensure VirtualBox isn't capturing the SUPER key, and verify swww initialization."
+echo -e "If keybinds, kitty, or wallpapers fail, check ~/.config/hypr/hyprland.conf, ~/.config/kitty/kitty.conf, and ensure VirtualBox isn't capturing the SUPER key."
