@@ -38,20 +38,15 @@ REPO_PKGS=(
   # Wayland stack
   hyprland hyprpaper hypridle hyprlock waybar
   # Apps / utilities
-  rofi-lbonn-wayland foot thunar thunar-volman gvfs gvfs-smb
+  foot thunar thunar-volman gvfs gvfs-smb
   network-manager-applet blueman bluez bluez-utils
   brightnessctl power-profiles-daemon
   swaybg grim slurp wl-clipboard playerctl jq curl
   xdg-desktop-portal-hyprland wf-recorder
   # Login / greeter
   greetd greetd-gtkgreet
-  # Themes
-  catppuccin-gtk-theme catppuccin-cursors-mocha catppuccin-icon-theme
   # optional VM helpers
   virt-viewer spice-vdagent
-)
-
-AUR_PKGS=( # leave empty for now – official repos already have everything
 )
 
 #────────── 3. System update & base packages ──────────────────────────────────
@@ -92,7 +87,11 @@ cat >/etc/greetd/config.toml <<'EOF'
 vt = 1
 
 [default_session]
-command = "gtkgreet -l --theme catppuccin"
+# Pick ONE of the following lines ⬇
+# 1) vanilla look
+# command = "gtkgreet -l"
+# 2) GTK theme env-var
+command = "bash -l -c /etc/greetd/themes/catppuccin.css"
 user = "greeter"
 EOF
 
@@ -123,3 +122,4 @@ read -rp "Reboot now? [y/N] " ans
 if [[ $ans =~ ^[Yy]$ ]]; then
   reboot
 fi
+
